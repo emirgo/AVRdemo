@@ -8,8 +8,10 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-int delay = 100;
+// Global delay variable
+volatile int delay = 100;
 
+// Custom delay function for ease of use
 void delay_ms(int n)
 {
 	while(n--)
@@ -20,16 +22,26 @@ void delay_ms(int n)
 
 int main(void)
 {
-	DDRB = 0xFF;
+	DDRB = 0xFF;  // Set all output PORT B
 	
-	EICRA = 0b00001110;
+	// To enable rising edge for INT1 on EICRA
+	// set 1 for 3rd and 2nd bit/
+	// To enable falling edge for INT0 on EICRA
+	// set 1 for 1st bit and 0 for 0th bit
+	EICRA = 0x0E; 
+	
+	// Enable external interrupts for INT1 and INT0
 	EIMSK = (1 << INT1) | (1 << INT0);
+	
+	// Enable global external interrupts
 	sei();
 	
 	// Main loop
 	while(1)
 	{
-		
+		// WARNING
+		// Directly dealing with output PORTB
+		// Hex is used for convenience
 		for(PORTB = 0x01; PORTB != 0x10; PORTB <<= 1)
 		{
 			delay_ms(delay);
@@ -43,12 +55,15 @@ int main(void)
 	return 0;
 }
 
+// Slow down switch
 ISR(INT0_vect)
 {
 	delay += 10;
 }
 
+// Speed up switch
 ISR(INT1_vect)
 {
-	delay -= 10;
+	if(delay > 10)
+		delay -= 10;
 }
