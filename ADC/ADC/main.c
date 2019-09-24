@@ -12,27 +12,18 @@ int main()
 {
 	DDRB = 0xFF;
 	
+	ADMUX |= (1 << REFS0);// VREF
+	ADMUX |= (1 << MUX0) | (1 << MUX2); //set ADC 5
+	ADMUX |= (1 << ADLAR);
 	
-	//Configure the ADC
+	ADCSRA |= (1 << ADEN); //Enable ADC
+	ADCSRA |= (1 << ADIE); // Enable Interrupts for ADC
 	
-	//8bits pr 10bits
-	//ADMUX |= (1 << ADLAR);
-	// Set max voltage
-	ADMUX |= (1 << REFS0);
+	ADCSRA |= (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2); // Prescaler at 128
+	DIDR0 = (1 << ADC5D);
+	ADCSRA |= (1 << ADSC); //Start conversion
 	
-	//Prescale the ADC
-	ADCSRA |= (1 << ADPS2);
-	//Enable ADC feature for AVR
-	ADCSRA |= (1 << ADEN);
-	
-	//Enable interrupts in ADC
-	ADCSRA |= (1 << ADIE);
-	
-	//Enable interrupts
-	sei();
-	
-	//Start first conversion
-	ADCSRA |= (1 << ADSC);
+	sei(); // interrupts
 	
 	while(1)
 	{
@@ -43,9 +34,6 @@ int main()
 //Start the next conversion - ISR
 ISR(ADC_vect)
 {
-	//PORTB |= 1 << PORTB1;
-	uint8_t low_bits = ADCL;
-	uint16_t ten_bits = ADCH << 8 | low_bits;
-	
-	
+	PORTB = ADCH >> 3;
+	ADCSRA |= (1 << ADSC); //Start conversion
 }
