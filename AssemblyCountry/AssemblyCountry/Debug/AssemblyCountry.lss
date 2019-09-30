@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  D:\DEV\Embedded\AVR_stuff\AssemblyCountry\AssemblyCountry\main.asm Mon Sep 30 21:05:06 2019
+AVRASM ver. 2.2.7  D:\DEV\Embedded\AVR_stuff\AssemblyCountry\AssemblyCountry\main.asm Mon Sep 30 22:19:00 2019
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m328pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m328pdef.inc'
@@ -991,34 +991,29 @@ AVRASM ver. 2.2.7  D:\DEV\Embedded\AVR_stuff\AssemblyCountry\AssemblyCountry\mai
                                  ; Author : emirg
                                  ;
                                  
-                                 
-                                 ; in out echo demo assembly programme
-                                 .DEF tmp = r16
-                                 .DEF count = r17
+                                 .DEF tmp = r16 // define register 16 as tmp
+                                 .DEF count = r17 // define register 17 as count
                                  
                                  MAIN:
-000000 2700                          clr tmp
-000001 e00a                      	ldi tmp, 10 //load 10 into tmp
-000002 b90a                          out DDRD, tmp
-000003 e01a                      	ldi count, 10
+000000 2700                          clr tmp	// clear tmp -- set all bits zero
+000001 e00a                      	ldi tmp, 10 // load 10 into tmp
+000002 b90a                          out DDRD, tmp // output tmp to DDRD
+000003 e01a                      	ldi count, 10 // load 10 into count
                                  
-                                 	LOOP0:
+                                 LOOP1:
+000004 9503                      	inc tmp // increment tmp by one until 20
+000005 b90a                      	out DDRD, tmp // output tmp value to DDRD
+000006 951a                      	dec count // decrement count by one
+000007 f7e1                      	brne loop1 // if count isn't zero continue loop
                                  
+000008 e01a                      ldi count, 10 // reset/load count to 10
+                                 LOOP2:
+000009 950a                      	dec tmp	// decrement tmp which was 20
+00000a b90a                      	out DDRD, tmp // output tmp value to DDRD
+00000b 951a                      	dec count // decrement count
+00000c f7e1                      	brne loop2 // as long as count isn't zero continue loop the loop
                                  
-                                 		LOOP1:
-000004 9503                      			inc tmp //increment tmp by one
-000005 b90a                      			out DDRD, tmp //output tmp value to DDRD
-000006 951a                      			dec count
-000007 f7e1                      			brne loop1
-                                 
-000008 e01a                      		ldi count, 10
-                                 		LOOP2:
-000009 950a                      			dec tmp
-00000a b90a                      			out DDRD, tmp
-00000b 951a                      			dec count
-00000c f7e1                      			brne loop2
-                                 
-00000d e01a                      		ldi count, 10
+00000d e01a                      ldi count, 10 // reset count to 10
 
 
 RESOURCE USE INFORMATION
