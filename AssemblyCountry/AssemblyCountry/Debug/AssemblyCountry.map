@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  D:\DEV\Embedded\AVR_stuff\AssemblyCountry\AssemblyCountry\main.asm Mon Sep 30 21:05:06 2019
+AVRASM ver. 2.2.7  D:\DEV\Embedded\AVR_stuff\AssemblyCountry\AssemblyCountry\main.asm Tue Oct 01 09:55:35 2019
 
 
 EQU  SIGNATURE_000 0000001e
@@ -695,9 +695,7 @@ EQU  ACIaddr      0000002e
 EQU  TWIaddr      00000030
 EQU  SPMRaddr     00000032
 EQU  INT_VECTORS_SIZE 00000034
-DEF  tmp          r16
-DEF  count        r17
+DEF  count        r16
 CSEG MAIN         00000000
-CSEG LOOP0        00000004
-CSEG LOOP1        00000004
-CSEG LOOP2        00000009
+CSEG LOOP1        00000003
+CSEG LOOP2        00000007

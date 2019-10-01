@@ -5,28 +5,23 @@
 ; Author : emirg
 ;
 
-.DEF tmp = r16
-.DEF count = r17
+.DEF count = r16
 
 MAIN:
-    clr tmp	// clear tmp -- set all bits zero
-	ldi tmp, 10 // load 10 into tmp
-    out DDRD, tmp // output tmp to DDRD
+    clr count	// clear count -- set all bits zero
 	ldi count, 10 // load 10 into count
+    out DDRD, count // output count to DDRD
 
-	LOOP0: // main loop - forever loop
-		LOOP1:
-			inc tmp // increment tmp by one until 20
-			out DDRD, tmp // output tmp value to DDRD
-			dec count // decrement count by one
-			brne loop1 // if count isn't zero continue loop
+LOOP1:
+	inc count // increment count by one until 20
+	out DDRD, count // output count value to DDRD
+	cpi count, 20 // compare count to 20
+	brne loop2 // if count isn't zero continue loop
+LOOP2:
+	dec count	// decrement count which was 20
+	out DDRD, count // output count value to DDRD
+	cpi count, 10 // compare count to 10
+	brne loop2 // as long as count isn't zero continue loop the loop
 
-		ldi count, 10 // reset/load count to 10
-		LOOP2:
-			dec tmp	// decrement tmp which was 20
-			out DDRD, tmp // output tmp value to DDRD
-			dec count // decrement count
-			brne loop2 // as long as count isn't zero continue loop the loop
-
-		ldi count, 10 // reset count to 10
-		jmp loop0 // repeat the main loop
+//ldi count, 10 // reset count to 10
+jmp main // repeat the main loop
